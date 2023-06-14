@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from "axios";
+import FormCategorie from "./component/formCategorie"
+import FormProduit from "./component/formProduit"
 
 function App() {
     const baseUrl = 'http://192.168.1.10:8000';
     const [produit, setProduit] = useState([]);
-    const [page, setPage] = useState('/api/produits?page=1&itemsPerPage=1');
+    const [page, setPage] = useState('/api/produits?page=1&itemsPerPage=2');
     const [nextPage, setNextPage] = useState('');
     const [previousPage, setPreviousPage] = useState('');
 
@@ -32,6 +34,8 @@ function App() {
 
     return (
         <div>
+            <FormCategorie />
+            <FormProduit />
             <button onClick={handlePrevious} disabled={!previousPage}>Précédent</button>
             <button onClick={handleNext} disabled={!nextPage}>Suivant</button>
             <ul>
