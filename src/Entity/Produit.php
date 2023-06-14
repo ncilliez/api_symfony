@@ -8,7 +8,12 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    paginationItemsPerPage: 3,
+    paginationMaximumItemsPerPage: 3,
+    paginationClientItemsPerPage: true
+    )
+]
 class Produit
 {
     #[ORM\Id]
