@@ -1,11 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const AddProductForm = () => {
+    const baseUrl = 'http://192.168.1.10:8000';
     const [libelle, setLibelle] = useState('');
     const [prix, setPrix] = useState('');
     const [image, setImage] = useState('');
     const [categorie, setCategorie] = useState('');
+    const [categories, setCategories] = useState([])
+
+    useEffect(() => {
+        axios.get(`${baseUrl}/api/categories`)
+            .then(response => {
+                setCategories(response.data["hydra:member"]);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }, []);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -14,7 +26,7 @@ const AddProductForm = () => {
             libelle: libelle,
             prix: prix,
             picture: image,
-            categorie: '/api/categories/1'
+            categorie: categorie
         }
 
         console.log(formData);
@@ -46,7 +58,14 @@ const AddProductForm = () => {
                         <input type="text" onChange={(event) => setImage(event.target.value)}/>
                     </label>
                     <label>Categorie:
-                        <input type="text" onChange={(event) => setCategorie(event.target.value)}/>
+                        <select onChange={(event) => setCategorie(event.target.value)}>
+                            <option>-- Choisissez une catégorie --</option>
+                            {categories.map((une, i) => (
+                                <option key={i} value={une["@id"]} select={une["@id"]}>
+                                    {une.libelle}  
+                                </option>
+                            ))}
+                        </select>
                     </label>
                     <button type="submit">Ajouter</button>
                 </fieldset>
