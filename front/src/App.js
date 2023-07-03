@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import FormCategorie from "./component/formCategorie"
 import FormProduit from "./component/formProduit"
+import FormFile from "./component/formFile"
 
 function App() {
     const baseUrl = 'http://192.168.1.10:8000';
@@ -41,10 +42,12 @@ function App() {
             <ul>
                 {produit.map((une, i) => (
                     <li key={i}>
-                        {une.libelle}  
+                        {une.libelle}
+                        <img src={`${baseUrl}/api/images/${une.picture}`} alt='toto' style={{ width: "100px" }}></img>
                     </li>
                 ))}
-            </ul>     
+            </ul>   
+            <FormFile />  
         </div>
     );
 }
