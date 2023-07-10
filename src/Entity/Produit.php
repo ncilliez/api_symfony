@@ -8,12 +8,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
-#[ApiResource(
-    paginationItemsPerPage: 3,
-    paginationMaximumItemsPerPage: 3,
-    paginationClientItemsPerPage: true
-    )
-]
+#[ApiResource]
 class Produit
 {
     #[ORM\Id]
@@ -27,12 +22,13 @@ class Produit
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
     private ?string $prix = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $picture = null;
+    #[ORM\ManyToOne(inversedBy: 'produits')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Categorie $categorie = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Categorie $categorie = null;
+    private ?MediaObject $picture = null;
 
     public function getId(): ?int
     {
@@ -63,18 +59,6 @@ class Produit
         return $this;
     }
 
-    public function getPicture(): ?string
-    {
-        return $this->picture;
-    }
-
-    public function setPicture(string $picture): self
-    {
-        $this->picture = $picture;
-
-        return $this;
-    }
-
     public function getCategorie(): ?Categorie
     {
         return $this->categorie;
@@ -83,6 +67,18 @@ class Produit
     public function setCategorie(?Categorie $categorie): self
     {
         $this->categorie = $categorie;
+
+        return $this;
+    }
+
+    public function getPicture(): ?MediaObject
+    {
+        return $this->picture;
+    }
+
+    public function setPicture(?MediaObject $picture): self
+    {
+        $this->picture = $picture;
 
         return $this;
     }
